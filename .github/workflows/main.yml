@@ -1,0 +1,33 @@
+name: build
+on: [workflow_dispatch, pull_request, push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - uses: actions/cache@v2
+        with:
+          path: Library
+          key: Library-MyProjectName-TargetPlatform
+          restore-keys: |
+            Library-MyProjectName-
+            Library-
+
+      - name: Build Project
+        uses: game-ci/unity-builder@v2
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: StandaloneWindows64
+
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Build
+          path: build

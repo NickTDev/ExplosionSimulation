@@ -1,0 +1,2 @@
+-Instructions are on screen
+-If scene does not load, then correct first scene is FinalScene
